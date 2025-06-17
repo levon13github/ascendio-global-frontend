@@ -5,7 +5,8 @@ import { fetchGraphQL, GET_ALL_POSTS } from '../lib/api';
 export default async function Home() {
   let posts = [];
   try {
-    const data = await fetchGraphQL(GET_ALL_POSTS);
+    const data: any = await fetchGraphQL(GET_ALL_POSTS);
+    console.log('Fetched data from WordPress:', data);
     posts = data?.posts?.nodes || [];
   } catch (error) {
     console.error('Failed to load posts for homepage:', error);
