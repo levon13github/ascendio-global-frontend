@@ -1,8 +1,20 @@
 // src/app/page.tsx
-import { fetchGraphQL, GET_ALL_POSTS } from '../lib/api';
+import { fetchGraphQL, GET_ALL_POSTS } from '../lib/api'; // Keep your existing API import
+
+// Import your new homepage section components
+import Header from '../components/Header';
+import HeroSection from '../components/HeroSection';
+import ProblemSolvedSection from '../components/ProblemSolvedSection';
+import CoreSolutionSection from '../components/CoreSolutionSection';
+import WhyChooseUsSection from '../components/WhyChooseUsSection';
+import TestimonialsSection from '../components/TestimonialsSection';
+import FinalCtaSection from '../components/FinalCtaSection';
+import Footer from '../components/Footer';
 
 // This is an Async Server Component in Next.js 13+ App Router
 export default async function Home() {
+  // Keep your existing WordPress data fetching logic if you still want to display posts later
+  // For now, we'll place the "Latest Insights" section further down or move it to a blog page.
   let posts = [];
   try {
     const data: any = await fetchGraphQL(GET_ALL_POSTS);
@@ -12,30 +24,21 @@ export default async function Home() {
     console.error('Failed to load posts for homepage:', error);
     // You might want to display a user-friendly error message or a fallback UI
   }
+// Until here it's the part of the WordPress posts which I have deleted
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-4xl font-bold mb-8">Welcome to Ascendio Global!</h1>
-      <p className="text-xl text-center mb-12">
-        Rise Together. Shape Tomorrow. Guiding aspiring entrepreneurs to find their business direction.
-      </p>
-
-      <section className="w-full max-w-2xl">
-        <h2 className="text-3xl font-semibold mb-6">Latest Insights (from WordPress)</h2>
-        {posts.length > 0 ? (
-          <div className="grid gap-6">
-            {posts.map((post: any) => (
-              <article key={post.databaseId} className="border p-4 rounded-lg shadow-sm">
-                <h3 className="text-xl font-bold mb-2">{post.title}</h3>
-                <div dangerouslySetInnerHTML={{ __html: post.excerpt }} className="text-gray-700" />
-                <a href={`/blog/${post.slug}`} className="text-blue-600 hover:underline mt-2 inline-block">Read More</a>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <p>No blog posts found yet. Start creating content in WordPress!</p>
-        )}
-      </section>
+    <>
+    <Header /> 
+    <main> {/* Use <main> tag as the container */}
+      {/* Render each of your homepage sections here in order */}
+      <HeroSection />
+      <ProblemSolvedSection />
+      <CoreSolutionSection />
+      <WhyChooseUsSection />
+      <TestimonialsSection />
+      <FinalCtaSection />
     </main>
+    <Footer />
+    </>
   );
 }

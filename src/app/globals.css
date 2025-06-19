@@ -1,42 +1,134 @@
+@import './../styles/variables.css'; /* Crucial: This must be the very first line */
+@import '@fortawesome/fontawesome-svg-core/styles.css'; /* Import Font Awesome CSS */
+
+/* Other global styles */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-background: #ebe6e3;
+  --color-text-primary: #3e3f40;
+  --color-accent: #916c3c;
+  --color-accent-hover: #7b5e33;
+  --color-light-text: #ccb699;
+  --color-secondary-accent: #ccb699;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
+html, body {
   padding: 0;
   margin: 0;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  font-size: 16px;
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  scroll-behavior: smooth;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* Basic CSS Reset & Global Styles */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  /*
+    Placeholder Font:
+    We're using Arial as a placeholder. We'll replace this with your chosen
+    brand font (e.g., from Google Fonts or a custom font) later.
+  */
+  font-family: Arial, sans-serif;
+  line-height: 1.6; /* Improved readability for body text */
+  font-size: 18px; /* Base font size for the entire document */
+  
+  /* Applying your brand's core colors using CSS variables */
+  background-color: var(--color-background); /* Your light beige/grey background */
+  color: var(--color-text-primary); /* Your dark grey primary text */
+
+  /* Smooth scrolling for anchor links */
+  scroll-behavior: smooth;
+
+  /* Font smoothing for better text rendering across browsers */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+   overflow-x: hidden; /* Prevent horizontal scrolling from overflow */
 }
 
-@media (prefers-color-scheme: dark) {
+/* Fluid typography - adjust base font size for smaller screens */
+@media (max-width: 768px) {
   html {
-    color-scheme: dark;
+    font-size: 16px; /* Slightly smaller base font on tablets */
   }
 }
+
+@media (max-width: 480px) {
+  html {
+    font-size: 15px; /* Even smaller base font on mobile */
+  }
+}
+
+/* Remove default margins and padding from all heading and paragraph tags */
+/* This gives us full control over spacing within components */
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Global link styles */
+a {
+  color: var(--color-accent); /* Links will now use your muted gold/brown accent color */
+  text-decoration: none; /* Removes the default underline from links */
+}
+
+a:hover {
+  text-decoration: underline; /* Adds an underline on hover for better usability */
+}
+
+/* Universal box-sizing for consistent layout calculations */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* --- New Global CTA Button Styles --- */
+.global-cta-button {
+  display: inline-block;
+  padding: 1.2rem 3rem; /* Larger padding for prominence */
+  background-color: white; /* White button for maximum contrast */
+  color: var(--color-accent); /* Text in accent color */
+  font-size: 1.3rem; /* Larger font for emphasis */
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 50px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  border: 2px solid white; /* White border for crispness */
+  cursor: pointer; /* Indicate it's clickable */
+}
+
+.global-cta-button:hover {
+  background-color: var(--color-background); /* Button changes to light beige on hover */
+  color: var(--color-accent-hover); /* Text changes to darker accent on hover */
+  transform: translateY(-4px); /* More pronounced lift on hover */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments for global button */
+@media (max-width: 768px) {
+  .global-cta-button {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .global-cta-button {
+    padding: 0.9rem 2.2rem;
+    font-size: 1rem;
+  }
+}
+/* --- End New Global CTA Button Styles --- */
+
+/* Optional: You might include a very basic container for content width */
+/* .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+} */

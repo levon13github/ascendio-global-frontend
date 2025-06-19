@@ -1,0 +1,14 @@
+:root {
+  /* Brand Logo Color Palette */
+  --color-background: #ebe6e3;         /* Very Light Beige/Grey */
+  --color-text-primary: #3e3f40;       /* Dark Grey */
+  --color-accent: #916c3c;             /* Muted Gold/Brown */
+  --color-accent-hover: #7b5e33;       /* Darker Muted Gold/Brown */
+  --color-light-text: #ccb699;         /* Lighter Muted Gold/Brown (used for text on dark backgrounds) */
+  --color-secondary-accent: #ccb699;   /* Lighter Muted Gold/Brown (can be used for other accents) */
+
+  /* You can add more variables here as needed, e.g., for typography, spacing, etc. */
+  /* --font-primary: 'Your Primary Font Name', sans-serif; */
+  /* --font-secondary: 'Your Secondary Font Name', serif; */
+  /* --spacing-unit: 8px; */
+}
