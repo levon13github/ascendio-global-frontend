@@ -1,5 +1,9 @@
 @import './../styles/variables.css'; /* Crucial: This must be the very first line */
 @import '@fortawesome/fontawesome-svg-core/styles.css'; /* Import Font Awesome CSS */
+/* Swiper.js styles */
+@import 'swiper/css';
+@import 'swiper/css/pagination'; /* If you want pagination dots */
+@import 'swiper/css/navigation'; /* If you want prev/next arrows */
 
 /* Other global styles */
 :root {
@@ -14,7 +18,7 @@
 html, body {
   padding: 0;
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif; /* Using Inter as per layout.tsx */
   line-height: 1.6;
   font-size: 16px;
   color: var(--color-text-primary);
@@ -23,20 +27,9 @@ html, body {
   overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
-/* Basic CSS Reset & Global Styles */
+/* Basic CSS Reset & Global Styles (Consolidated with above for clarity) */
 html,
 body {
-  padding: 0;
-  margin: 0;
-  /*
-    Placeholder Font:
-    We're using Arial as a placeholder. We'll replace this with your chosen
-    brand font (e.g., from Google Fonts or a custom font) later.
-  */
-  font-family: Arial, sans-serif;
-  line-height: 1.6; /* Improved readability for body text */
-  font-size: 18px; /* Base font size for the entire document */
-  
   /* Applying your brand's core colors using CSS variables */
   background-color: var(--color-background); /* Your light beige/grey background */
   color: var(--color-text-primary); /* Your dark grey primary text */
@@ -47,7 +40,7 @@ body {
   /* Font smoothing for better text rendering across browsers */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-   overflow-x: hidden; /* Prevent horizontal scrolling from overflow */
+  overflow-x: hidden; /* Prevent horizontal scrolling from overflow */
 }
 
 /* Fluid typography - adjust base font size for smaller screens */
@@ -126,9 +119,878 @@ a:hover {
 }
 /* --- End New Global CTA Button Styles --- */
 
-/* Optional: You might include a very basic container for content width */
-/* .container {
+/* --- Custom Cursor Styles --- */
+body {
+  cursor: none; /* Hide the default browser cursor */
+}
+
+.custom-cursor {
+  position: fixed; /* Keep it fixed relative to the viewport */
+  top: 0;
+  left: 0;
+  pointer-events: none; /* Crucial: Allows mouse events (like clicks) to pass through to elements beneath */
+  border-radius: 50%; /* Makes it a circle */
+  z-index: 9999; /* Ensure it's always on top of other content */
+  /* Initial transition for properties not managed by Framer Motion's 'animate' prop */
+  transition: background-color 0.1s ease-out, border 0.1s ease-out;
+}
+
+/* --- Unified Hero Section Styles --- */
+/* Apply to About, Services, and Contact hero sections */
+.services-hero-section,
+.about-hero-section,
+.testimonials-hero-section,
+.contact-hero-section {
+    background-color: var(--color-text-primary); /* Changed to primary text color for consistency with your brand's dark background */
+    color: white; /* Default text color for hero section */
+    padding: 8rem 2rem 6rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 450px; /* Adjust as needed */
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Specific background-image will be set in individual component's styled-jsx */
+}
+
+/* Overlay for hero background images */
+.hero-background-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Consistent overlay */
+    z-index: 1;
+}
+
+/* Hero Title Styles (common to all hero sections) */
+.services-hero-title,
+.about-hero-title,
+.testimonials-hero-title,
+.contact-hero-title {
+    position: relative;
+    z-index: 2;
+    color: white !important; /* Ensure titles are white */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* The key text shadow! */
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+}
+
+/* Hero Subtitle Styles (common to all hero sections) */
+.services-hero-subtitle,
+.about-hero-subtitle,
+.testimonials-hero-subtitle,
+.contact-hero-title {
+    position: relative;
+    z-index: 2;
+    color: white !important; /* Ensure subtitles are white */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Apply text shadow to subtitle too */
+    font-size: 1.6rem;
+    font-weight: 400;
+    max-width: 700px;
+    opacity: 0.9;
+}
+
+/* Responsive adjustments for unified hero titles */
+@media (max-width: 768px) {
+  .services-hero-title,
+  .about-hero-title,
+  .testimonials-hero-title,
+  .contact-hero-title {
+    font-size: 2.8rem; /* Adjust for tablets */
+  }
+  .services-hero-subtitle,
+  .about-hero-subtitle,
+  .testimonials-hero-title,
+  .contact-hero-title {
+    font-size: 1.4rem; /* Adjust for tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .services-hero-title,
+  .about-hero-title,
+  .testimonials-hero-title,
+  .contact-hero-title {
+    font-size: 2.2rem; /* Adjust for mobile */
+  }
+  .services-hero-subtitle,
+  .about-hero-title,
+  .testimonials-hero-title,
+  .contact-hero-title {
+    font-size: 1.2rem; /* Adjust for mobile */
+  }
+}
+/* --- End Unified Hero Section Styles --- */
+
+
+/* --- Swiper.js Global Overrides (Added here for maximum specificity) --- */
+
+/* Define Swiper's theme variables globally */
+/* This is the primary way Swiper expects color customization */
+:root {
+  --swiper-theme-color: var(--color-accent); /* Active dot and arrow color (fallback) */
+  --swiper-pagination-color: var(--color-accent); /* Active dot color */
+  --swiper-navigation-color: var(--color-text-primary); /* Arrow color */
+  --swiper-navigation-size: 30px; /* Adjust arrow size if needed */
+}
+
+/* Force inactive pagination dots to primary text color */
+.swiper-pagination-bullet {
+  background-color: var(--color-text-primary) !important; /* Force inactive dot color */
+  opacity: 0.6 !important; /* Force opacity */
+}
+
+/* Force active pagination dots to accent color */
+.swiper-pagination-bullet-active {
+  background-color: var(--color-accent) !important; /* Force active dot color */
+  opacity: 1 !important;
+}
+
+/*
+  For navigation arrows:
+  We remove the custom background-image.
+  Swiper's default arrows (often SVGs) should then pick up the `color` property.
+  We force the `color` property using `!important` to ensure it applies.
+*/
+.swiper-button-next,
+.swiper-button-prev {
+  background-image: none !important; /* Crucial: Remove custom SVG background */
+  color: var(--color-text-primary) !important; /* Force arrow color */
+  font-size: var(--swiper-navigation-size) !important; /* Ensure size is picked up */
+}
+
+/* Adjust position if needed, though default usually works well */
+.swiper-button-next {
+  right: 10px !important;
+  left: auto !important;
+}
+
+.swiper-button-prev {
+  left: 10px !important;
+  right: auto !important;
+}
+
+
+/* Hover effect for arrows */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: var(--color-accent-hover) !important; /* Force hover color */
+}
+
+/* Hide arrows on smaller screens */
+@media (max-width: 768px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none !important;
+  }
+}
+
+/* --- Hero Section Specific Global Styles --- */
+/* These styles are moved from HeroSection.tsx's styled-jsx to globals.css */
+
+.hero-logo .logo-image {
+  height: 120px; /* Increased size for desktop - made it significantly bigger */
+  width: auto;
+  border-radius: 15px; /* Added border-radius to trim edges */
+  filter: drop-shadow(0 0 18px rgba(0,0,0,0.7)); /* Stronger shadow for better visibility */
+  margin-bottom: 1.5rem; /* Space below the logo */
+}
+
+.hero-slogan {
+  font-size: 1.4rem; /* Larger font size for prominence */
+  font-weight: 600; /* Slightly bolder */
+  color: var(--color-accent) !important; /* Set slogan color to accent color, same as CTA text */
+  text-transform: uppercase;
+  letter-spacing: 0.15em; /* Increased letter spacing for impact */
+  text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.7); /* Stronger shadow for readability */
+  margin-bottom: 2rem; /* Space below the slogan */
+}
+
+/* Responsive adjustments for Hero Section Logo and Slogan */
+@media (max-width: 1024px) {
+  .hero-logo .logo-image {
+    height: 100px; /* Adjusted for tablets */
+  }
+  .hero-slogan {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-logo .logo-image {
+    height: 85px; /* Adjusted for smaller tablets */
+  }
+  .hero-slogan {
+    font-size: 1.0rem;
+    letter-spacing: 0.1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-logo .logo-image {
+    height: 70px; /* Adjusted for mobile */
+  }
+  .hero-slogan {
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+  }
+}
+/* --- End Hero Section Specific Global Styles --- */
+
+/* --- Problem Solved Section Global Styles --- */
+.problem-solved-section {
+  padding: 6rem 2rem;
+  background-color: var(--color-background); /* Lighter background for this section */
+  color: var(--color-text-primary);
+  text-align: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
-} */
+}
+
+.problem-solved-section .section-header {
+  margin-bottom: 4rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.problem-solved-section .section-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.problem-solved-section .section-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: rgba(62, 63, 64, 0.8); /* Slightly lighter text for subtitle */
+}
+
+/* Wrapper for the grid - no blur/opacity here directly */
+.problems-grid-wrapper {
+  position: relative; /* Needed for z-index context */
+  z-index: 1; /* Ensure it's below the backdrop and active card */
+}
+
+.problems-grid {
+  display: grid;
+  /* Adjust minmax and gap to encourage 4 cards in one line on larger screens */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Minimized card size */
+  gap: 1.5rem; /* Reduced gap */
+  justify-content: center;
+  align-items: stretch; /* Ensures cards have equal height */
+}
+
+.problem-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem; /* Minimized padding for smaller initial size */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  will-change: transform, box-shadow, filter, opacity; /* Add filter/opacity for transition */
+  min-height: 280px; /* Set a fixed initial height to ensure alignment in one line */
+  pointer-events: auto; /* Ensure cards are clickable by default */
+  transition: filter 0.3s ease, opacity 0.3s ease; /* Smooth transition for blur/opacity */
+}
+
+/* Styles for the expanded card - MOVED FROM ProblemSolvedSection.tsx */
+.problem-card.active {
+  position: fixed !important; /* FORCE fixed positioning */
+  top: 50% !important; /* FORCE vertical centering */
+  left: 50% !important; /* FORCE horizontal centering */
+  transform: translate(-50%, -50%) !important; /* FORCE self-centering transform */
+  width: 90vw; /* Max width for expanded card */
+  max-width: 700px; /* Limit max width on large screens */
+  height: auto; /* Allow height to expand with content */
+  max-height: 90vh; /* Prevent overflow on smaller screens */
+  overflow-y: auto; /* Enable scrolling if content is too long */
+  padding: 3rem; /* More padding when expanded */
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+  border: 2px solid var(--color-accent); /* Highlight border */
+  cursor: default; /* Change cursor to indicate it's active */
+  z-index: 10002; /* EXTREMELY HIGH Z-INDEX to force it on top */
+  background-color: white; /* Ensure it's always white when active */
+}
+
+/* Styles for inactive (blurred) cards */
+.problem-card.inactive-blurred {
+    filter: blur(5px) brightness(0.7); /* Blur and dim */
+    opacity: 0.7;
+    pointer-events: none; /* Make unclickable */
+}
+
+.problem-icon {
+  width: 60px; /* Slightly smaller icon */
+  height: 60px;
+  background-color: var(--color-accent);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: white;
+  box-shadow: 0 4px 10px rgba(145, 108, 60, 0.4);
+}
+
+.problem-icon svg {
+  font-size: 2rem; /* Slightly smaller icon size */
+}
+
+.problem-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+
+.problem-short-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(62, 63, 64, 0.7);
+  margin-bottom: 1rem;
+}
+
+.problem-detailed-description-container {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(62, 63, 64, 0.9);
+  text-align: left;
+  width: 100%;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(62, 63, 64, 0.2);
+  margin-top: 1.5rem;
+}
+
+.problem-detailed-description-container p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-primary); /* Ensure this is your primary text color */
+}
+
+/* NEW: Styles for the backdrop/overlay */
+.card-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Reduced opacity for less darkness */
+  z-index: 10001; /* Just below the active card */
+  pointer-events: auto; /* Ensure it captures clicks to close the card */
+}
+
+
+/* Responsive Adjustments for Problem Solved Section */
+@media (max-width: 1024px) {
+  .problem-solved-section .section-title {
+    font-size: 2.4rem;
+  }
+  .problem-solved-section .section-subtitle {
+    font-size: 1.15rem;
+  }
+  .problems-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  .problem-card {
+    padding: 1.2rem;
+    min-height: 250px;
+  }
+  .problem-icon {
+    width: 55px;
+    height: 55px;
+    font-size: 1.8rem;
+  }
+  .problem-title {
+    font-size: 1.2rem;
+  }
+  .problem-short-description {
+    font-size: 0.9rem;
+  }
+  .problem-detailed-description-container p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .problem-solved-section {
+    padding: 4rem 1.5rem;
+  }
+  .problem-solved-section .section-header {
+    margin-bottom: 3rem;
+  }
+  .problem-solved-section .section-title {
+    font-size: 2rem;
+  }
+  .section-subtitle { /* Ensure this is targeted correctly for mobile */
+    font-size: 1rem;
+  }
+  .problems-grid {
+    grid-template-columns: 1fr; /* Stack cards on mobile */
+    gap: 1.5rem;
+  }
+  .problem-card {
+    padding: 1.8rem;
+    min-height: auto; /* Remove fixed height when stacked */
+  }
+  .problem-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+  }
+  .problem-icon svg {
+    font-size: 1.8rem;
+  }
+  .problem-title {
+    font-size: 1.2rem;
+  }
+  .problem-short-description {
+    font-size: 0.95rem;
+  }
+  .problem-detailed-description-container p {
+    font-size: 0.95rem;
+  }
+}
+/* --- End Problem Solved Section Global Styles --- */
+
+
+
+
+
+/* --- Core Solution Section Global Styles --- */
+.core-solution-section {
+  padding: 6rem 2rem;
+  background-color: var(--color-light-text); /* A different background color to break up sections */
+  color: var(--color-text-primary);
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.core-solution-section .section-header {
+  margin-bottom: 4rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.core-solution-section .section-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.core-solution-section .section-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+}
+
+/* Wrapper for the grid - no blur/opacity here directly */
+.solutions-grid-wrapper {
+  position: relative; /* Needed for z-index context */
+  z-index: 1; /* Ensure it's below the backdrop and active card */
+}
+
+.solutions-grid {
+  display: grid;
+  /* Adjust minmax and gap to encourage 4 cards in one line on larger screens */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Minimized card size */
+  gap: 1.5rem; /* Reduced gap */
+  justify-content: center;
+  align-items: stretch; /* Ensures cards have equal height */
+}
+
+.solution-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem; /* Minimized padding for smaller initial size */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  will-change: transform, box-shadow, filter, opacity; /* Add filter/opacity for transition */
+  min-height: 280px; /* Set a fixed initial height to ensure alignment in one line */
+  pointer-events: auto; /* Ensure cards are clickable by default */
+  transition: filter 0.3s ease, opacity 0.3s ease; /* Smooth transition for blur/opacity */
+}
+
+/* Styles for the expanded card - similar to problem-card.active */
+.solution-card.active {
+  position: fixed !important; /* FORCE fixed positioning */
+  top: 50% !important; /* FORCE vertical centering */
+  left: 50% !important; /* FORCE horizontal centering */
+  transform: translate(-50%, -50%) !important; /* FORCE self-centering transform */
+  width: 90vw; /* Max width for expanded card */
+  max-width: 700px; /* Limit max width on large screens */
+  height: auto; /* Allow height to expand with content */
+  max-height: 90vh; /* Prevent overflow on smaller screens */
+  overflow-y: auto; /* Enable scrolling if content is too long */
+  padding: 3rem; /* More padding when expanded */
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+  border: 2px solid var(--color-accent); /* Highlight border */
+  cursor: default; /* Change cursor to indicate it's active */
+  z-index: 10002; /* EXTREMELY HIGH Z-INDEX to force it on top */
+  background-color: white; /* Ensure it's always white when active */
+}
+
+/* Styles for inactive (blurred) cards */
+.solution-card.inactive-blurred {
+    filter: blur(5px) brightness(0.7); /* Blur and dim */
+    opacity: 0.7;
+    pointer-events: none; /* Make unclickable */
+}
+
+.solution-icon {
+  width: 60px; /* Adjusted size for consistency */
+  height: 60px; /* Adjusted size for consistency */
+  background-color: rgba(145, 108, 60, 0.1); /* Lighter background for icon */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem; /* Adjusted margin */
+  color: var(--color-accent); /* Icon color */
+  transition: background-color 0.3s ease; /* Transition for hover effect */
+}
+
+.solution-card:hover .solution-icon {
+    background-color: rgba(145, 108, 60, 0.2); /* Darker background on hover */
+}
+
+.solution-icon svg {
+  font-size: 2rem; /* Adjusted Font Awesome icon size within the container */
+  color: var(--color-accent);
+}
+
+.solution-card-title {
+  font-size: 1.3rem; /* Adjusted size for consistency */
+  font-weight: 600;
+  margin-bottom: 0.6rem; /* Adjusted margin */
+  color: var(--color-text-primary);
+  line-height: 1.3;
+}
+
+.solution-short-description {
+  font-size: 0.95rem; /* Adjusted size for consistency */
+  line-height: 1.6;
+  color: rgba(62, 63, 64, 0.7);
+  margin-bottom: 1rem; /* Adjusted margin */
+}
+
+.solution-detailed-description-container {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(62, 63, 64, 0.9);
+  text-align: left;
+  width: 100%;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(62, 63, 64, 0.2);
+  margin-top: 1.5rem;
+}
+
+.solution-detailed-description-container p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-primary); /* Ensure this is your primary text color */
+}
+
+/* Responsive Adjustments (similar to ProblemSolvedSection for consistency) */
+@media (max-width: 1024px) {
+  .core-solution-section .section-title {
+    font-size: 2.4rem;
+  }
+  .core-solution-section .section-subtitle {
+    font-size: 1.15rem;
+  }
+  .solutions-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Further adjustment for 4-in-line */
+    gap: 1rem;
+  }
+  .solution-card {
+    padding: 1.2rem;
+    min-height: 250px; /* Adjusted min-height */
+  }
+  .solution-icon {
+    width: 55px;
+    height: 55px;
+    font-size: 1.8rem;
+  }
+  .solution-card-title {
+    font-size: 1.2rem;
+  }
+  .solution-short-description {
+    font-size: 0.9rem;
+  }
+  .solution-detailed-description-container p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .core-solution-section {
+    padding: 4rem 1.5rem;
+  }
+  .core-solution-section .section-header {
+    margin-bottom: 3rem;
+  }
+  .core-solution-section .section-title {
+    font-size: 2rem;
+  }
+  .core-solution-section .section-subtitle {
+    font-size: 1rem;
+  }
+  .solutions-grid {
+    grid-template-columns: 1fr; /* Stack cards on mobile */
+    gap: 1.5rem;
+  }
+  .solution-card {
+    padding: 1.8rem;
+    min-height: auto; /* Remove fixed height when stacked */
+  }
+  .solution-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+  }
+  .solution-icon svg {
+    font-size: 1.8rem;
+  }
+  .solution-card-title {
+    font-size: 1.2rem;
+  }
+  .solution-short-description {
+    font-size: 0.95rem;
+  }
+  .solution-detailed-description-container p {
+    font-size: 0.95rem;
+  }
+}
+/* --- End Core Solution Section Global Styles --- */
+
+
+
+/* --- Why Choose Us Section Global Styles --- */
+.why-choose-us-section {
+  padding: 6rem 2rem;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.why-choose-us-section .section-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  z-index: 2; /* Ensure content is above background elements */
+  position: relative;
+}
+
+.why-choose-us-section .section-headline {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+}
+
+/* Wrapper for the grid to apply blur/dim effect */
+.value-tiles-grid-wrapper {
+  position: relative; /* Needed for z-index context */
+  z-index: 1; /* Ensure it's below the backdrop and active card */
+}
+
+.value-tiles-grid {
+  display: flex; /* CHANGE: Use Flexbox for wrapping and centering */
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  justify-content: center; /* Center items horizontally (especially the last row) */
+  gap: 1.5rem; /* Consistent gap between items */
+  margin-bottom: 4rem;
+  /* Removed grid-specific properties */
+  /* grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); */
+}
+
+.value-tile {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  will-change: transform, box-shadow, filter, opacity;
+  min-height: 280px; /* Keep a consistent height for alignment */
+  pointer-events: auto;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+
+  /* NEW: Flexbox sizing for 4 items per row */
+  flex: 0 0 calc(25% - 1.125rem); /* 25% width minus 3/4 of the gap (1.5rem * 3 / 4) to account for gaps */
+  max-width: 250px; /* Optional: prevent cards from becoming too wide on very large screens */
+  min-width: 180px; /* Ensure cards don't shrink too much */
+}
+
+/* Styles for the expanded card - similar to problem-card.active */
+.value-tile.active {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 90vw;
+  max-width: 700px;
+  height: auto;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 3rem;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--color-accent);
+  cursor: default;
+  z-index: 10002;
+  background-color: white;
+}
+
+/* Styles for inactive (blurred) cards */
+.value-tile.inactive-blurred {
+    filter: blur(5px) brightness(0.7);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.value-icon {
+  margin-bottom: 1rem;
+  line-height: 1;
+  color: var(--color-accent);
+}
+
+.value-icon svg {
+  font-size: 3.5rem;
+}
+
+.value-tile h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-primary);
+}
+
+.value-short-description {
+  font-size: 1.1rem;
+  font-style: italic;
+  margin-bottom: 1rem;
+  color: var(--color-accent);
+}
+
+.value-detailed-description-container {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+}
+
+.value-detailed-description-container p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+}
+
+.why-choose-us-section .impact-statement {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  max-width: 800px;
+  margin: 0 auto 4rem auto;
+  color: var(--color-text-primary);
+}
+
+.why-choose-us-background-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .why-choose-us-section .section-headline {
+    font-size: 2.2rem;
+  }
+  .value-tiles-grid {
+    gap: 1rem; /* Smaller gap for tablets */
+  }
+  .value-tile {
+    flex: 0 0 calc(25% - 0.75rem); /* Adjust flex-basis for 4 items with smaller gap */
+    min-width: 160px;
+    max-width: 220px;
+    padding: 1.2rem;
+    min-height: 250px;
+  }
+  .value-icon svg {
+    font-size: 3rem;
+  }
+  .value-tile h3 {
+    font-size: 1.2rem;
+  }
+  .value-short-description, .value-detailed-description-container p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .why-choose-us-section .section-headline {
+    font-size: 2rem;
+  }
+  .value-tiles-grid {
+    display: grid; /* CHANGE: Revert to Grid for mobile stacking */
+    grid-template-columns: 1fr; /* Stack cards on mobile */
+    gap: 1.5rem; /* Standard mobile gap */
+  }
+  .value-tile {
+    flex: none; /* Remove flex properties when stacked */
+    width: auto; /* Remove fixed width */
+    min-width: auto;
+    max-width: auto;
+    padding: 1.8rem; /* Standard mobile padding */
+    min-height: auto; /* Remove fixed height when stacked */
+  }
+  .value-icon svg {
+    font-size: 3rem;
+  }
+  .why-choose-us-section .impact-statement {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .why-choose-us-section .section-headline {
+    font-size: 1.8rem;
+  }
+}
+/* --- End Why Choose Us Section Global Styles --- */

@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // Import specific icons you need
 import {
   faLinkedin,
-  faTwitter,
   faFacebook,
   faInstagram,
 } from '@fortawesome/free-brands-svg-icons';
@@ -24,7 +23,7 @@ export default function Footer() {
           <Link href="/">
             Ascendio Global
           </Link>
-          <p className="footer-slogan">Rise Together. Shape Tomorrow.</p>
+          <p className="footer-slogan">Rise Together.<br />Shape Tomorrow.</p>
         </div>
 
         <div className="footer-links">
@@ -44,9 +43,6 @@ export default function Footer() {
           <div className="social-icons">
             <a href="https://linkedin.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
               <FontAwesomeIcon icon={faLinkedin} /> {/* Replaced <i> with FontAwesomeIcon */}
-            </a>
-            <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-              <FontAwesomeIcon icon={faTwitter} /> {/* Replaced <i> with FontAwesomeIcon */}
             </a>
             <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <FontAwesomeIcon icon={faFacebook} /> {/* Replaced <i> with FontAwesomeIcon */}

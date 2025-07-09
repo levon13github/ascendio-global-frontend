@@ -7,14 +7,9 @@ import Link from 'next/link';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-// Import Swiper styles
-import 'swiper/css'; // Core Swiper styles
-import 'swiper/css/pagination'; // Styles for pagination dots (if you want them)
-import 'swiper/css/navigation'; // Styles for navigation arrows (if you want them)
-
 // Import Swiper modules
-// We'll use Pagination and Navigation for basic controls
-import { Pagination, Navigation, Autoplay } from 'swiper/modules'; // Added Autoplay
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+import { motion, easeOut } from 'framer-motion'; // Import motion AND easeOut from framer-motion
 
 export default function TestimonialsSection() {
   const testimonials = [
@@ -34,70 +29,126 @@ export default function TestimonialsSection() {
       title: "E-commerce Innovator",
     },
     {
-      quote: "The community platform is invaluable. Sharing challenges and successes with other founders has accelerated my progress significantly.",
+      quote: "Working with Ascendio Global transformed my approach to business. Their insights are invaluable for any aspiring entrepreneur.",
       name: "Jordan T.",
-      title: "Social Enterprise Lead",
+      title: "Digital Marketing Specialist",
     },
     {
-      quote: "I was skeptical about online coaching, but Ascendio's approach is incredibly personal and effective. Highly recommend for any aspiring entrepreneur!",
-      name: "Chris R.",
-      title: "Digital Nomad & Founder",
+      quote: "The community platform is incredibly supportive. I've found mentors and collaborators who have accelerated my journey.",
+      name: "Casey R.",
+      title: "Social Enterprise Leader",
     },
   ];
+
+  // Define animation variants for the container and items
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1, // Delay between children animations
+        delayChildren: 0.3, // Delay before children start animating
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 50 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeOut } },
+  };
+
+  const headlineVariants = {
+    hidden: { opacity: 0, y: -50 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: easeOut } },
+  };
+
+  const ctaVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    show: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: easeOut, delay: 0.6 } },
+  };
 
   return (
     <section className="testimonials-section">
       <div className="section-content">
-        <h2 className="section-headline">Hear From Our Rising Entrepreneurs</h2>
-
-        <Swiper
-          modules={[Pagination, Navigation, Autoplay]} // Enable modules
-          spaceBetween={30} // Space between slides
-          slidesPerView={1} // Show 1 slide per view by default
-          loop={true} // Enable infinite loop
-          autoplay={{
-            delay: 5000, // 5 seconds delay
-            disableOnInteraction: false, // Keep autoplay even after user interaction
-          }}
-          pagination={{ clickable: true }} // Enable clickable pagination dots
-          navigation={true} // Enable navigation arrows
-          breakpoints={{ // Responsive breakpoints for different screen sizes
-            640: { // When window width is >= 640px
-              slidesPerView: 1,
-              spaceBetween: 20,
-            },
-            768: { // When window width is >= 768px
-              slidesPerView: 2, // Show 2 slides
-              spaceBetween: 30,
-            },
-            1024: { // When window width is >= 1024px
-              slidesPerView: 3, // Show 3 slides
-              spaceBetween: 30,
-            },
-          }}
-          className="mySwiper" // Custom class for Swiper container
+        <motion.h2
+          className="section-headline"
+          variants={headlineVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.5 }} // Animates when 50% of it is in view
         >
-          {testimonials.map((testimonial, index) => (
-            <SwiperSlide key={index}> {/* Each testimonial is a SwiperSlide */}
-              <div className="testimonial-card">
-                <span className="quote-icon">❝</span>
-                <p className="testimonial-quote">"{testimonial.quote}"</p>
-                <p className="testimonial-author">
-                  <span className="author-name">{testimonial.name}</span>
-                  {testimonial.title && <span className="author-title">, {testimonial.title}</span>}
-                </p>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          Hear From Our Rising Entrepreneurs
+        </motion.h2>
 
-        <Link href="/testimonials" className="global-cta-button">
-          Read All Success Stories
-        </Link>
+        <motion.div
+          className="testimonials-carousel-wrapper"
+          variants={containerVariants} // Apply container variants to the wrapper
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }} // Animates when 30% of the carousel is in view
+        >
+          <Swiper
+            modules={[Pagination, Navigation, Autoplay]}
+            spaceBetween={30} // Space between slides
+            slidesPerView={1} // Default to 1 slide per view
+            loop={true} // Enable looping
+            autoplay={{
+              delay: 5000, // 5 seconds delay
+              disableOnInteraction: false, // Continue autoplay after user interaction
+            }}
+            pagination={{ clickable: true }} // Enable clickable pagination dots
+            navigation={true} // Enable navigation arrows
+            breakpoints={{
+              // When window width is >= 768px
+              768: {
+                slidesPerView: 2,
+                spaceBetween: 40,
+              },
+              // When window width is >= 1024px
+              1024: {
+                slidesPerView: 3,
+                spaceBetween: 50,
+              },
+            }}
+            className="mySwiper" // Custom class for Swiper instance
+          >
+            {testimonials.map((testimonial, index) => (
+              <SwiperSlide key={index}>
+                {/* Apply itemVariants to the testimonial-card itself */}
+                <motion.div
+                  className="testimonial-card"
+                  variants={itemVariants}
+                  // Note: Swiper handles its own internal transitions,
+                  // so whileHover might not be as pronounced here.
+                  // We rely on Swiper's smooth slide transitions.
+                >
+                  <span className="quote-icon">❝</span>
+                  <p className="testimonial-quote">"{testimonial.quote}"</p>
+                  <p className="testimonial-author">
+                    <span className="author-name">{testimonial.name}</span>
+                    {testimonial.title && <span className="author-title">, {testimonial.title}</span>}
+                  </p>
+                </motion.div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </motion.div>
+
+        <motion.div
+          variants={ctaVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.8 }}
+        >
+          <Link href="/testimonials" className="global-cta-button">
+            Read All Success Stories
+          </Link>
+        </motion.div>
       </div>
 
       <div className="testimonials-background-elements"></div>
 
+      {/* All Swiper-related styles are now in globals.css */}
       <style jsx>{`
         .testimonials-section {
           padding: 6rem 2rem;
@@ -105,11 +156,11 @@ export default function TestimonialsSection() {
           color: var(--color-text-primary);
           text-align: center;
           position: relative;
-          overflow: hidden;
+          overflow: hidden; /* Keep overflow hidden for section */
         }
 
         .section-content {
-          max-width: 1200px; /* Increased max-width slightly for 3 cards */
+          max-width: 1200px; /* Increased max-width for better Swiper display */
           margin: 0 auto;
           z-index: 2;
           position: relative;
@@ -123,13 +174,12 @@ export default function TestimonialsSection() {
           color: var(--color-text-primary);
         }
 
-        /* Swiper container needs specific width/height if not inheriting */
-        /* .mySwiper from Swiper's CSS will handle most of this */
-        .mySwiper {
-            width: 100%;
-            padding-bottom: 50px; /* Space for pagination dots */
-            margin-bottom: 4rem; /* Space below carousel */
+        .testimonials-carousel-wrapper {
+          margin-bottom: 4rem;
         }
+
+        /* The .mySwiper class and its direct child styles are now primarily managed in globals.css */
+        /* Only component-specific styles that don't conflict with Swiper's internal elements remain here */
 
         .testimonial-card {
           background-color: white;
@@ -141,7 +191,6 @@ export default function TestimonialsSection() {
           align-items: center;
           text-align: center;
           height: 100%; /* Ensure cards fill SwiperSlide height */
-          box-sizing: border-box; /* Include padding in height calculation */
         }
 
         .quote-icon {
@@ -158,13 +207,13 @@ export default function TestimonialsSection() {
           font-style: italic;
           margin-bottom: 1.5rem;
           color: var(--color-text-primary);
+          flex-grow: 1; /* Allow quote to take available space */
         }
 
         .testimonial-author {
           font-size: 1rem;
           font-weight: 600;
           color: var(--color-accent);
-          margin-top: auto; /* Pushes author to the bottom if content height varies */
         }
 
         .author-name {
@@ -185,13 +234,31 @@ export default function TestimonialsSection() {
           z-index: 1;
         }
 
-        /* Responsive adjustments for sections (already refined) */
+        /* Responsive adjustments for section content */
+        @media (max-width: 1024px) {
+          .section-headline {
+            font-size: 2.2rem;
+          }
+          .testimonial-card {
+            padding: 2rem;
+          }
+          .quote-icon {
+            font-size: 3.5rem;
+          }
+          .testimonial-quote {
+            font-size: 1.1rem;
+          }
+        }
+
         @media (max-width: 768px) {
+          .testimonials-section {
+            padding: 4rem 1.5rem;
+          }
           .section-headline {
             font-size: 2rem;
           }
           .testimonial-card {
-            padding: 2rem;
+            padding: 1.8rem;
           }
           .quote-icon {
             font-size: 3rem;
@@ -202,23 +269,14 @@ export default function TestimonialsSection() {
           .testimonial-author {
             font-size: 0.9rem;
           }
-          .mySwiper {
-              padding-bottom: 40px; /* Adjust pagination space */
-          }
         }
 
         @media (max-width: 480px) {
-          .testimonials-section {
-            padding: 4rem 1.5rem;
-          }
           .section-headline {
             font-size: 1.8rem;
           }
           .testimonial-card {
             padding: 1.5rem;
-          }
-          .mySwiper {
-              padding-bottom: 30px; /* Adjust pagination space */
           }
         }
       `}</style>

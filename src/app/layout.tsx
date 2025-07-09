@@ -2,11 +2,15 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Header from "@/components/Header"; // Import your Header component
+import Footer from "@/components/Footer"; // Import your Footer component
+import CustomCursor from "@/components/CustomCursor"; // Import the custom cursor component
 
-// Font Awesome Configuration (already done in globals.css, but good to keep in mind for future specific config)
+// Font Awesome Configuration
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 config.autoAddCss = false;
+
 
 // Import the BackToTopButton component
 import BackToTopButton from '../components/BackToTopButton';
@@ -15,16 +19,9 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Ascendio Global',
-  description: 'Igniting Entrepreneurial Journeys. Rise Together. Shape Tomorrow.',
-  // --- NEW: Favicon configuration ---
+  description: 'Igniting Entrepreneurial Journeys. Rise Together. Shape Tomorrow. Ascendio Global empowers aspiring entrepreneurs with personalized coaching, comprehensive digital content, vibrant community, and AI tools to build impactful businesses and leave a lasting legacy.',
   icons: {
-    icon: '/favicon.png', // Points to the favicon.ico in your public directory
-    // You can add more sizes/types if you have them, e.g.:
-    // apple: '/apple-touch-icon.png', // For Apple touch icon
-    // other: {
-    //   rel: 'mask-icon',
-    //   url: '/safari-pinned-tab.svg',
-    // },
+    icon: '/favicon.ico',
   },
 };
 
@@ -36,8 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
-        <BackToTopButton /> {/* Add the button here */}
+        <Header /> {/* Header placed here */}
+        {children} {/* This is where your page content will be rendered */}
+        <Footer /> {/* Footer placed here */}
+        <BackToTopButton />
+        <CustomCursor /> {/* Render the custom cursor here, typically at the end of the body */}
       </body>
     </html>
   );

@@ -2,14 +2,12 @@
 import { fetchGraphQL, GET_ALL_POSTS } from '../lib/api'; // Keep your existing API import
 
 // Import your new homepage section components
-import Header from '../components/Header';
 import HeroSection from '../components/HeroSection';
 import ProblemSolvedSection from '../components/ProblemSolvedSection';
 import CoreSolutionSection from '../components/CoreSolutionSection';
 import WhyChooseUsSection from '../components/WhyChooseUsSection';
 import TestimonialsSection from '../components/TestimonialsSection';
 import FinalCtaSection from '../components/FinalCtaSection';
-import Footer from '../components/Footer';
 
 // This is an Async Server Component in Next.js 13+ App Router
 export default async function Home() {
@@ -27,8 +25,7 @@ export default async function Home() {
 // Until here it's the part of the WordPress posts which I have deleted
 
   return (
-    <>
-    <Header /> 
+    <> 
     <main> {/* Use <main> tag as the container */}
       {/* Render each of your homepage sections here in order */}
       <HeroSection />
@@ -38,7 +35,6 @@ export default async function Home() {
       <TestimonialsSection />
       <FinalCtaSection />
     </main>
-    <Footer />
     </>
   );
 }
