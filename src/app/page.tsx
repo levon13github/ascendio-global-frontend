@@ -5,7 +5,6 @@ import { fetchGraphQL, GET_ALL_POSTS } from '../lib/api'; // Keep your existing 
 import HeroSection from '../components/HeroSection';
 import ProblemSolvedSection from '../components/ProblemSolvedSection';
 import CoreSolutionSection from '../components/CoreSolutionSection';
-import WhyChooseUsSection from '../components/WhyChooseUsSection';
 import TestimonialsSection from '../components/TestimonialsSection';
 import FinalCtaSection from '../components/FinalCtaSection';
 
@@ -31,7 +30,6 @@ export default async function Home() {
       <HeroSection />
       <ProblemSolvedSection />
       <CoreSolutionSection />
-      <WhyChooseUsSection />
       <TestimonialsSection />
       <FinalCtaSection />
     </main>

@@ -1,9 +1,9 @@
 // src/app/about/page.tsx
 'use client';
 
-import React from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import Image from 'next/image';
-import { motion, easeOut } from 'framer-motion';
+import { motion, AnimatePresence, Easing } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faHandshake,
@@ -13,273 +13,359 @@ import {
     faGem,
     faTree,
     faStar,
-    faBullseye, // For Vision
-    faSeedling, // For Growth/Impact in Mission
-    faCompass, // For Guidance in Why
-    faTools, // For Action/Framework in How
-    faRocket // For Mission - added explicitly
+    faBullseye,
+    faSeedling,
+    faCompass,
+    faTools,
+    faRocket,
+    faTimes
 } from '@fortawesome/free-solid-svg-icons';
 
+import WhyChooseUsSection from '@/components/WhyChooseUsSection';
+
 export default function AboutPage() {
-    // Animation variants for consistent section reveals
-    const sectionHeaderVariants = {
-        hidden: { opacity: 0, y: -50 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: easeOut } },
+    const [activeJourneyIndex, setActiveJourneyIndex] = useState<number | null>(null);
+    const [activeStatementIndex, setActiveStatementIndex] = useState<number | null>(null);
+    const scrollPos = useRef(0);
+
+    useLayoutEffect(() => {
+        // This effect is primarily for capturing initial positions if needed,
+        // though Framer Motion's layout prop often handles this internally.
+    }, [activeJourneyIndex, activeStatementIndex]);
+
+    const handleJourneyClick = (index: number) => {
+        if (activeJourneyIndex === index) {
+            setActiveJourneyIndex(null);
+            document.body.style.overflow = '';
+            window.scrollTo(0, scrollPos.current);
+        } else {
+            scrollPos.current = window.scrollY;
+            setActiveJourneyIndex(index);
+            document.body.style.overflow = 'hidden';
+        }
     };
 
-    const textBlockVariants = {
-        hidden: { opacity: 0, y: 30 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: easeOut, delay: 0.2 } },
+    const handleStatementClick = (index: number) => {
+        if (activeStatementIndex === index) {
+            setActiveStatementIndex(null);
+            document.body.style.overflow = '';
+            window.scrollTo(0, scrollPos.current);
+        } else {
+            scrollPos.current = window.scrollY;
+            setActiveStatementIndex(index);
+            document.body.style.overflow = 'hidden';
+        }
     };
 
-    const listItemVariants = {
-        hidden: { opacity: 0, x: -20 },
-        show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: easeOut } },
-    };
+    // Removed sectionHeaderVariants, textBlockVariants, itemVariants, containerVariants
+    // as they are no longer used for static reveals.
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        show: {
+    const contentVariants = {
+        collapsed: { opacity: 0, height: 0, overflow: 'hidden', padding: 0 },
+        expanded: {
             opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.3,
-            },
+            height: 'auto',
+            padding: '1rem 0 0',
+            transition: { opacity: { duration: 0.3 }, height: { duration: 0.5, ease: 'easeOut' as Easing } },
         },
     };
 
-    const valueItemVariants = {
-        hidden: { opacity: 0, y: 50 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeOut } },
-    };
-
-
-    const coreValues = [
+    const journeyMilestones = [
         {
-            name: "Empowerment",
-            phrase: "Unleashing the potential within every aspiring entrepreneur.",
-            description: "Believing that everyone has the potential to build their dream. Our guidance fosters self-reliance and confidence.",
-            icon: faStar
+            id: "journey-1",
+            icon: faLightbulb,
+            title: "The Spark: Identifying the Core Challenge",
+            shortDescription: "Witnessing a widespread struggle for aspiring entrepreneurs.",
+            detailedText: (
+                <>
+                    <p>
+                        Every thriving enterprise begins with a singular vision – a deep-seated desire to solve a problem, fueled by <b>unwavering passion</b>, and a clear roadmap for a brighter future. For me, the genesis of <b>Ascendio Global</b> wasn't just a business idea; it was a profound response to a pervasive challenge. I observed countless brilliant minds, overflowing with groundbreaking concepts, often struggling to transform their latent potential into tangible, impactful businesses. They were stifled by market complexities, a lack of structured guidance, or the sheer, isolating weight of entrepreneurial uncertainty. <b>Their biggest fear was and still is how to think of a business idea.</b>
+                    </p>
+                </>
+            ),
+            founderImage: (
+                <figure className="founder-image-figure">
+                    <Image
+                        src="/images/founder.jpg"
+                        alt="Levon Bampagian, Founder of Ascendio Global"
+                        width={1000}
+                        height={1200}
+                        layout="responsive"
+                        objectFit="cover"
+                        className="founder-image"
+                    />
+                    <figcaption className="founder-caption">
+                        Levon Bampagian, Founder of Ascendio Global
+                    </figcaption>
+                </figure>
+            ),
         },
         {
-            name: "Trust",
-            phrase: "Building relationships based on transparency and reliability.",
-            description: "Fostering a safe and supportive space where everyone can confidently explore their ideas.",
-            icon: faHandshake
+            id: "journey-2",
+            icon: faCompass,
+            title: "The Journey: Forging Expert Insights",
+            shortDescription: "Leveraging diverse experience to pinpoint success strategies.",
+            detailedDescription: (
+                <p>
+                    My journey through high-growth tech startups, corporate innovation, sustainable development, personal growth, consulting services and establishing NGOs provided a unique vantage point. I witnessed the common pitfalls that derail promising ventures – and, more importantly, identified the precise strategies that propel visionary founders to unprecedented success. This firsthand insight ignited a singular purpose within me: to demystify the entrepreneurial path and forge a clearer, more accessible route to market leadership.
+                </p>
+            ),
         },
         {
-            name: "Integrity",
-            phrase: "Upholding the highest standards in all our actions.",
-            description: "Championing ethical principles, a standard of honesty and commitment to what is right.",
-            icon: faShieldAlt
+            id: "journey-3",
+            icon: faTools,
+            title: "The Ecosystem: Ascendio Global's Unique Approach",
+            shortDescription: "A meticulously crafted system for entrepreneurial ascent.",
+            detailedDescription: (
+                <p>
+                    <b>Ascendio Global</b> stands as the culmination of this dedication. It's not merely a platform; it's a meticulously crafted ecosystem built upon data-driven strategies, holistic personal development, lean startup methodologies, scalable digital frameworks and generative AI tools integration. Our foundational belief is simple yet powerful: with personalized mentorship, supportive toolkits, and actionable, cutting-edge tools, <b>any aspiring entrepreneur</b> can confidently generate their suitable idea, launch, navigate, and scale their ambition into a sustainable, world-changing enterprise. I've poured my dedication, years of solid experience, strategic foresight, unwavering commitment to ethical innovation, knack for simplifying complex systems, affinity for AI into cultivating a space where your ideas don't just survive – they <b>ascend</b> to their highest potential.
+                </p>
+            ),
         },
         {
-            name: "Innovation",
-            phrase: "Pioneering new approaches for sustainable growth.",
-            description: " Leveraging cutting-edge methods, including AI, and embracing new technologies to accelerate and enhance your entrepreneurial journey.",
-            icon: faLightbulb
-        },
-        {
-            name: "Impact",
-            phrase: "Driving meaningful change, globally and individually.",
-            description: "Fueling a global wave of impactful businesses, born from empowered entrepreneurs who thrive, enrich their lives, and contribute to a better world.",
-            icon: faGlobe
-        },
-        {
-            name: "Authenticity",
-            phrase: "Encouraging true self-expression in entrepreneurial journeys.",
-            description: "Inspiring a movement of genuine entrepreneurship, grounded in our values and empowering all to embrace their true potential.",
-            icon: faGem
-        },
-        {
-            name: "Legacy",
-            phrase: "Cultivating lasting success for future generations.",
-            description: "Empowering future generations of entrepreneurs, leaving a lasting legacy of success created together.",
-            icon: faTree
+            id: "journey-4",
+            icon: faTree,
+            title: "The Legacy: Building Beyond Business",
+            shortDescription: "Empowering entrepreneurs to create lasting impact.",
+            detailedDescription: (
+                <p>
+                    My personal mission, deeply embedded in Ascendio Global's ethos, is to empower you not only to achieve remarkable business success but to architect a lasting <b>legacy</b>. This is about building ventures that resonate with your authentic purpose, drive meaningful societal impact, and stand the test of time. <b>Let's embark on this transformative journey and build something truly extraordinary, together.</b>
+                </p>
+            ),
         },
     ];
 
     const businessStatements = [
         {
+            id: "statement-1",
             title: "Our WHY",
             icon: faCompass,
-            description: "To inspire a world where everyone believes in their power to shape their own destiny and create extraordinary impact."
+            shortDescription: "To inspire a world where everyone believes in their power to shape their own destiny and create extraordinary impact.",
+            detailedDescription: "Our fundamental purpose is to ignite a global movement where individuals recognize their inherent capacity to forge their own paths. We believe that by empowering people to tap into their unique strengths and visions, they can not only achieve personal success but also drive significant positive change in the world.",
         },
         {
+            id: "statement-2",
             title: "Our HOW",
             icon: faTools,
-            description: "Through the 'Ascendio Global Framework', we provide personalized 1-on-1 coaching, comprehensive digital content, a vibrant community platform, and cutting-edge AI tools. This integrated approach offers a clear roadmap from ideation to market leadership."
+            shortDescription: "Through the 'Ascendio Global Framework', we provide personalized 1-on-1 coaching, comprehensive digital content, a vibrant community platform, and cutting-edge AI tools.",
+            detailedDescription: "The 'Ascendio Global Framework' is our proprietary methodology, meticulously designed to guide you from ideation to market leadership. It integrates personalized 1-on-1 coaching for tailored support, a comprehensive library of digital content for self-paced learning, a vibrant community platform for collaboration, and cutting-edge AI tools for efficiency and insight. This holistic approach ensures you have a clear, actionable roadmap at every stage.",
         },
         {
+            id: "statement-3",
             title: "Our WHAT",
             icon: faSeedling,
-            description: "We offer a holistic ecosystem of entrepreneurial guidance, resources, and support designed to help you generate your business idea, navigate the complexities of modern business creation and growth. We deliver clarity, strategy, and actionable steps."
+            shortDescription: "We offer a holistic ecosystem of entrepreneurial guidance, resources, and support designed to help you generate your business idea, navigate the complexities of modern business creation and growth.",
+            detailedDescription: "Ascendio Global delivers a complete ecosystem of entrepreneurial guidance. We provide the clarity, strategy, and actionable steps needed to help you generate a viable business idea, navigate the complexities of modern business creation, and scale your venture effectively. Our resources and support are designed to empower you to thrive in today's dynamic market.",
         },
         {
+            id: "statement-4",
             title: "Our VISION",
             icon: faBullseye,
-            description: "Ascendio Global is a vehicle for significant positive global impact, driven by innovation and leadership, providing us with freedom, recognition, and continuous growth, while achieving ethical prosperity and fulfilling our vision of a better future for humanity."
+            shortDescription: "Ascendio Global is a vehicle for significant positive global impact, driven by innovation and leadership, providing us with freedom, recognition, and continuous growth.",
+            detailedDescription: "Our vision extends beyond mere business success. We see Ascendio Global as a powerful vehicle for creating significant positive global impact, fueled by our commitment to innovation and leadership. This journey provides us with the freedom to pursue our passions, the recognition for our contributions, and the continuous growth that comes from achieving ethical prosperity and fulfilling our ultimate vision of a better future for humanity.",
         },
         {
+            id: "statement-5",
             title: "Our MISSION",
             icon: faRocket,
-            description: "To equip aspiring and established entrepreneurs with the knowledge, and tools necessary to confidently launch, scale, and sustain businesses that not only achieve financial success but also champion positive change in the world."
+            shortDescription: "To equip aspiring and established entrepreneurs with the knowledge, and tools necessary to confidently launch, scale, and sustain businesses that not only achieve financial success but also champion positive change in the world.",
+            detailedDescription: "Our mission is to empower entrepreneurs at every stage – from aspiring individuals with nascent ideas to established business owners seeking to scale. We provide the essential knowledge, practical tools, and unwavering support needed to confidently launch, grow, and sustain ventures that are not only financially successful but also committed to championing positive change and contributing meaningfully to the world.",
         },
     ];
 
-
     return (
         <div className="about-page-container">
-            {/* Hero/Intro Section - Placeholder, can be more elaborate */}
+            {/* Hero/Intro Section */}
             <section className="about-hero-section">
-                {/* Background Image Overlay */}
                 <div className="hero-background-image-overlay"></div>
-                <motion.h1
-                    className="about-hero-title"
-                    initial={{ opacity: 0, y: -70 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: easeOut }}
-                >
+                {/* Removed motion.h1 and motion.p with initial/animate/transition for hero text */}
+                <h1 className="about-hero-title">
                     About Ascendio Global
-                </motion.h1>
-                <motion.p
-                    className="about-hero-subtitle"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, ease: easeOut, delay: 0.3 }}
-                >
+                </h1>
+                <p className="about-hero-subtitle">
                     Igniting Entrepreneurial Legacies.
-                </motion.p>
+                </p>
             </section>
 
-            {/* 1. My Brand Story */}
-            <section className="brand-story-section">
-                <motion.h2
-                    className="section-title"
-                    variants={sectionHeaderVariants}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.5 }}
-                >
+            {/* 1. My Brand Story (Now interactive "Our Journey") */}
+            <section className="our-journey-section">
+                {/* Removed motion.h2 and animation props */}
+                <h2 className="section-title">
                     Our Journey: From Idea to Impact
-                </motion.h2>
-                <div className="story-content">
-                    <motion.div
-                        className="story-text"
-                        variants={textBlockVariants}
-                        initial="hidden"
-                        whileInView="show"
-                        viewport={{ once: true, amount: 0.4 }}
-                    >
-                        <p>
-                            Every thriving enterprise begins with a singular vision – a deep-seated desire to solve a problem, fueled by <b>unwavering passion</b>, and a clear roadmap for a brighter future. For me, the genesis of <b>Ascendio Global</b> wasn't just a business idea; it was a profound response to a pervasive challenge. I observed countless brilliant minds, overflowing with groundbreaking concepts, often struggling to transform their latent potential into tangible, impactful businesses. They were stifled by market complexities, a lack of structured guidance, or the sheer, isolating weight of entrepreneurial uncertainty. <b>Their biggest fear was and still is how to think of a business idea.</b>
-                        </p>
-                        <p>
-                            My journey through high-growth tech startups, corporate innovation, sustainable development, personal growth, consulting services and establishing NGOs provided a unique vantage point. I witnessed the common pitfalls that derail promising ventures – and, more importantly, identified the precise strategies that propel visionary founders to unprecedented success. This firsthand insight ignited a singular purpose within me: to demystify the entrepreneurial path and forge a clearer, more accessible route to market leadership.
-                        </p>
-                        <p>
-                            <b>Ascendio Global</b> stands as the culmination of this dedication. It's not merely a platform; it's a meticulously crafted ecosystem built upon data-driven strategies, holistic personal development, lean startup methodologies, scalable digital frameworks and generative AI tools integration. Our foundational belief is simple yet powerful: with personalized mentorship, supportive toolkits, and actionable, cutting-edge tools, <b>any aspiring entrepreneur</b> can confidently generate their suitable idea, launch, navigate, and scale their ambition into a sustainable, world-changing enterprise. I've poured my dedication, years of solid experience, strategic foresight, unwavering commitment to ethical innovation, knack for simplifying complex systems, affinity for AI into cultivating a space where your ideas don't just survive – they <b>ascend</b> to their highest potential.
-                        </p>
-                        <p>
-                            My personal mission, deeply embedded in Ascendio Global's ethos, is to empower you not only to achieve remarkable business success but to architect a lasting <b>legacy</b>. This is about building ventures that resonate with your authentic purpose, drive meaningful societal impact, and stand the test of time. <b>Let's embark on this transformative journey and build something truly extraordinary, together.</b>
-                        </p>
-                    </motion.div>
-                    <motion.div
-                        className="story-image"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, ease: easeOut, delay: 0.4 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                    >
-                        {/* Use <figure> and <figcaption> for the image and its visible caption */}
-                        <figure className="founder-image-figure">
-                            <Image
-                                src="/images/founder.jpg"
-                                alt="Levon Bampagian, Founder of Ascendio Global" // Improved alt text
-                                width={1000}
-                                height={1200}
-                                layout="responsive"
-                                objectFit="cover"
-                                className="founder-image"
-                            />
-                            <figcaption className="founder-caption">
-                                Levon Bampagian, Founder of Ascendio Global
-                            </figcaption>
-                        </figure>
-                    </motion.div>
+                </h2>
+                {/* Removed motion.div wrapper and animation props */}
+                <div className="journey-milestones-grid-wrapper">
+                    {/* Removed motion.div wrapper and animation props */}
+                    <div className="journey-milestones-grid">
+                        {journeyMilestones.map((milestone, index) => {
+                            const isActive = activeJourneyIndex === index;
+                            const isAnyJourneyActive = activeJourneyIndex !== null;
+
+                            if (isActive) return null;
+
+                            return (
+                                <motion.div // Keep motion.div for layoutId and whileHover
+                                    key={milestone.id}
+                                    layoutId={milestone.id}
+                                    className={`journey-milestone-card ${isAnyJourneyActive && !isActive ? 'inactive-blurred' : ''}`}
+                                    whileHover={!isAnyJourneyActive ? { scale: 1.02, boxShadow: '0 12px 25px rgba(0, 0, 0, 0.15)' } : {}}
+                                    onClick={() => handleJourneyClick(index)}
+                                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                                    style={{ zIndex: isAnyJourneyActive && !isActive ? 1 : 'auto' }}
+                                >
+                                    <div className="journey-milestone-icon">
+                                        <FontAwesomeIcon icon={milestone.icon} />
+                                    </div>
+                                    <h3>{milestone.title}</h3>
+                                    <p className="journey-milestone-short-description">{milestone.shortDescription}</p>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
                 </div>
             </section>
 
-            {/* 2. My Business Statements */}
-            <section className="business-statements-section">
-                <motion.h2
-                    className="section-title"
-                    variants={sectionHeaderVariants}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.5 }}
-                >
-                    Our Blueprint: Guiding Principles for Growth
-                </motion.h2>
-                <motion.div
-                    className="statements-grid"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.3 }}
-                >
-                    {businessStatements.map((statement, index) => (
+            <AnimatePresence>
+                {activeJourneyIndex !== null && (
+                    <>
                         <motion.div
-                            key={index}
-                            className="statement-card"
-                            variants={listItemVariants}
+                            className="card-backdrop"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={() => handleJourneyClick(activeJourneyIndex)}
+                        />
+                        <motion.div
+                            key={journeyMilestones[activeJourneyIndex].id}
+                            layoutId={journeyMilestones[activeJourneyIndex].id}
+                            className="journey-milestone-card active"
+                            onClick={() => handleJourneyClick(activeJourneyIndex)}
+                            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                            style={{ zIndex: 10002 }}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
                         >
-                            <div className="statement-icon">
-                                <FontAwesomeIcon icon={statement.icon} />
+                            <div className="journey-milestone-icon">
+                                <FontAwesomeIcon icon={journeyMilestones[activeJourneyIndex].icon} />
                             </div>
-                            <h3>{statement.title}</h3>
-                            <p>{statement.description}</p>
+                            <h3>{journeyMilestones[activeJourneyIndex].title}</h3>
+                            <motion.div
+                                key="detailedContentJourney"
+                                variants={contentVariants}
+                                initial="collapsed"
+                                animate="expanded"
+                                exit="collapsed"
+                                className="journey-milestone-detailed-description-container"
+                            >
+                                {/* NEW: Conditional rendering for specific layout of journey-1 */}
+                                {journeyMilestones[activeJourneyIndex].id === "journey-1" ? (
+                                    <div className="journey-spark-content-wrapper">
+                                        <div className="journey-spark-image-column">
+                                            {journeyMilestones[activeJourneyIndex].founderImage}
+                                        </div>
+                                        <div className="journey-spark-text-column">
+                                            {journeyMilestones[activeJourneyIndex].detailedText}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    // Default rendering for other journey cards
+                                    journeyMilestones[activeJourneyIndex].detailedDescription
+                                )}
+                                <button className="close-card-button" onClick={(e) => { e.stopPropagation(); handleJourneyClick(activeJourneyIndex); }}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </button>
+                            </motion.div>
                         </motion.div>
-                    ))}
-                </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+
+            {/* 2. My Business Statements (Already interactive) */}
+            <section className="business-statements-section">
+                {/* Removed motion.h2 and animation props */}
+                <h2 className="section-title">
+                    Our Blueprint: Guiding Principles for Growth
+                </h2>
+                {/* Removed motion.div wrapper and animation props */}
+                <div className="statements-grid-wrapper">
+                    {/* Removed motion.div wrapper and animation props */}
+                    <div className="statements-grid">
+                        {businessStatements.map((statement, index) => {
+                            const isActive = activeStatementIndex === index;
+                            const isAnyStatementActive = activeStatementIndex !== null;
+
+                            if (isActive) return null;
+
+                            return (
+                                <motion.div // Keep motion.div for layoutId and whileHover
+                                    key={statement.id}
+                                    layoutId={statement.id}
+                                    className={`statement-card ${isAnyStatementActive && !isActive ? 'inactive-blurred' : ''}`}
+                                    whileHover={!isAnyStatementActive ? { scale: 1.02, boxShadow: '0 12px 25px rgba(0, 0, 0, 0.15)' } : {}}
+                                    onClick={() => handleStatementClick(index)}
+                                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                                    style={{ zIndex: isAnyStatementActive && !isActive ? 1 : 'auto' }}
+                                >
+                                    <div className="statement-icon">
+                                        <FontAwesomeIcon icon={statement.icon} />
+                                    </div>
+                                    <h3>{statement.title}</h3>
+                                    <p className="statement-short-description">{statement.shortDescription}</p>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                </div>
             </section>
 
-            {/* 3. My Core Values (Pulled from WhyChooseUsSection for consistency) */}
-            <section className="core-values-section">
-                <motion.h2
-                    className="section-title"
-                    variants={sectionHeaderVariants}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.5 }}
-                >
-                    The Foundation: Our Unwavering Core Values
-                </motion.h2>
-                <motion.div
-                    className="values-grid"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.3 }}
-                >
-                    {coreValues.map((value, index) => (
+            <AnimatePresence>
+                {activeStatementIndex !== null && (
+                    <>
                         <motion.div
-                            key={index}
-                            className="value-card"
-                            variants={valueItemVariants}
-                            whileHover={{ scale: 1.03, boxShadow: "0 12px 30px rgba(0, 0, 0, 0.15)" }}
-                            transition={{ duration: 0.2 }}
+                            className="card-backdrop"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={() => handleStatementClick(activeStatementIndex)}
+                        />
+                        <motion.div
+                            key={businessStatements[activeStatementIndex].id}
+                            layoutId={businessStatements[activeStatementIndex].id}
+                            className="statement-card active"
+                            onClick={() => handleStatementClick(activeStatementIndex)}
+                            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                            style={{ zIndex: 10002 }}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
                         >
-                            <div className="value-icon">
-                                <FontAwesomeIcon icon={value.icon} />
+                            <div className="statement-icon">
+                                <FontAwesomeIcon icon={businessStatements[activeStatementIndex].icon} />
                             </div>
-                            <h3>{value.name}</h3>
-                            <p className="value-phrase">{value.phrase}</p>
-                            <p className="value-description">{value.description}</p>
+                            <h3>{businessStatements[activeStatementIndex].title}</h3>
+                            <motion.div
+                                key="detailedContentStatement"
+                                variants={contentVariants}
+                                initial="collapsed"
+                                animate="expanded"
+                                exit="collapsed"
+                                className="statement-detailed-description-container"
+                            >
+                                <p>{businessStatements[activeStatementIndex].detailedDescription}</p>
+                                <button className="close-card-button" onClick={(e) => { e.stopPropagation(); handleStatementClick(activeStatementIndex); }}>
+                                    <FontAwesomeIcon icon={faTimes} />
+                                </button>
+                            </motion.div>
                         </motion.div>
-                    ))}
-                </motion.div>
-            </section>
+                    </>
+                )}
+            </AnimatePresence>
+
+            {/* 3. Why Choose Us Section (moved from Home page) */}
+            <WhyChooseUsSection />
 
             <style jsx>{`
                 .about-page-container {
@@ -292,7 +378,7 @@ export default function AboutPage() {
                     background-image: url('/images/hero-about-background.png');
                 }
 
-                /* General Section Styles */
+                /* General Section Titles */
                 .section-title {
                     font-size: 2.8rem;
                     font-weight: 700;
@@ -302,191 +388,143 @@ export default function AboutPage() {
                     line-height: 1.2;
                 }
 
-                /* Brand Story Section */
-                .brand-story-section {
+                /* Our Journey Section (now interactive) */
+                .our-journey-section {
                     padding: 6rem 2rem;
                     max-width: 1200px;
                     margin: 0 auto;
+                    text-align: center;
                 }
 
-                .story-content {
+                /* Hide short description when card is active (for journey cards) */
+                .journey-milestone-card.active .journey-milestone-short-description {
+                    display: none;
+                }
+
+                /* Styles for the detailed description container (for journey cards) */
+                .journey-milestone-detailed-description-container {
+                    position: relative;
+                }
+
+                /* NEW: Flex container for image and text inside the expanded "Spark" card */
+                .journey-spark-content-wrapper {
                     display: flex;
-                    flex-direction: row;
-                    gap: 3rem;
-                    align-items: flex-start;
+                    flex-direction: row; /* Default to row for desktop */
+                    gap: 2rem; /* Space between image and text */
+                    align-items: flex-start; /* Align content to the top */
+                    margin-top: 1.5rem; /* Space below title/icon */
+                    padding-top: 1rem; /* Consistent with other detailed sections */
+                    border-top: 1px dashed rgba(62, 63, 64, 0.2);
                 }
 
-                .story-text {
-                    flex: 1.2; /* Gave text slightly less room, but still primary */
-                    font-size: 1.15rem;
-                    line-height: 1.8;
-                    color: rgba(62, 63, 64, 0.8);
+                .journey-spark-image-column {
+                    flex: 0 0 30%; /* Image column takes 30% width */
+                    max-width: 200px; /* Limit image column width */
+                    display: flex;
+                    justify-content: center; /* Center image horizontally in its column */
+                    align-items: flex-start; /* Align image to top of its column */
+                }
+
+                .journey-spark-text-column {
+                    flex: 1; /* Text column takes remaining space */
+                }
+
+                .journey-milestone-detailed-description-container p {
+                    font-size: 1rem;
+                    line-height: 1.6;
+                    color: var(--color-text-primary);
                     text-align: left;
-                }
-
-                .story-text p {
                     margin-bottom: 1.5rem;
                 }
 
-                .story-image {
-                    flex: 0.8; /* Gave image more room than previously, but less than text */
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
+                /* Founder Image within detailed description (for journey cards) */
+                .journey-milestone-detailed-description-container .founder-image-figure {
+                    margin: 0; /* Reset margin from previous central positioning */
+                    width: 100%; /* Take full width of its column */
                     border-radius: 12px;
                     overflow: hidden;
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
                     padding-bottom: 0.5rem;
                     background-color: white;
                 }
 
-                .founder-image-figure {
-                    margin: 0; /* Reset default figure margin */
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                }
-
-                .founder-image {
-                    border-radius: 12px 12px 0 0; /* Rounded top, sharp bottom for seamless caption */
+                .journey-milestone-detailed-description-container .founder-image {
+                    border-radius: 12px 12px 0 0;
                     object-fit: cover;
                     width: 100%;
                     height: auto;
                     display: block;
                 }
 
-                .founder-caption {
+                .journey-milestone-detailed-description-container .founder-caption {
                     font-size: 0.9rem;
-                    color: var(--color-text-secondary); /* A slightly lighter color for the caption */
-                    margin-top: 1rem; /* Space between image and caption */
+                    color: var(--color-text-secondary);
+                    margin-top: 1rem;
                     text-align: center;
-                    padding: 0 1rem 1rem; /* Padding within the caption area */
+                    padding: 0 1rem 1rem;
                     width: 100%;
                 }
 
-                /* Business Statements Section */
+                /* Close button for expanded card (reused from other sections) */
+                .close-card-button {
+                    position: absolute;
+                    top: 0.5rem;
+                    right: 0.5rem;
+                    background: none;
+                    border: none;
+                    color: var(--color-text-primary);
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    padding: 0.5rem;
+                    border-radius: 50%;
+                    transition: background-color 0.2s ease, color 0.2s ease;
+                    z-index: 1003;
+                }
+
+                .close-card-button:hover {
+                    background-color: rgba(0, 0, 0, 0.05);
+                    color: var(--color-accent);
+                }
+
+                /* Icon, Title, Short Description for journey cards (base styles, moved to globals.css) */
+                /* .journey-milestone-icon { ... } */
+                /* .journey-milestone-icon :global(svg) { ... } */
+                /* .journey-milestone-card h3 { ... } */
+                /* .journey-milestone-short-description { ... } */
+
+
+                /* Business Statements Section (existing styles, mostly moved to globals.css) */
                 .business-statements-section {
                     padding: 6rem 2rem;
                     background-color: var(--color-light-text);
                     max-width: 1200px;
                     margin: 0 auto;
-                }
-
-                .statements-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                    gap: 2.5rem;
-                    justify-content: center;
-                }
-
-                .statement-card {
-                    background-color: white;
-                    border-radius: 12px;
-                    padding: 2.5rem;
-                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
                     text-align: center;
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
-                    height: 100%;
                 }
 
-                .statement-card:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+                /* Hide short description when card is active (for statement cards) */
+                .statement-card.active .statement-short-description {
+                    display: none;
                 }
 
-                .statement-icon {
-                    font-size: 3.5rem;
-                    color: var(--color-accent);
-                    margin-bottom: 1.5rem;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 80px;
-                    height: 80px;
-                    background-color: rgba(145, 108, 60, 0.1);
-                    border-radius: 50%;
+                /* Styles for the detailed description container (for statement cards) */
+                .statement-detailed-description-container {
+                    position: relative;
                 }
 
-                .statement-icon :global(svg) {
-                    font-size: 2.5rem;
-                    color: var(--color-accent);
-                }
-
-                .statement-card h3 {
-                    font-size: 1.6rem;
-                    font-weight: 600;
-                    margin-bottom: 1rem;
+                .statement-detailed-description-container p {
+                    font-size: 1rem;
+                    line-height: 1.6;
                     color: var(--color-text-primary);
+                    text-align: left;
                 }
 
-                .statement-card p {
-                    font-size: 1.05rem;
-                    line-height: 1.7;
-                    color: rgba(62, 63, 64, 0.7);
-                }
+                /* Icon, Title, Short Description for statement cards (base styles, moved to globals.css) */
+                /* .statement-icon { ... } */
+                /* .statement-icon :global(svg) { ... } */
+                /* .statement-card h3 { ... } */
+                /* .statement-short-description { ... } */
 
-                /* Core Values Section */
-                .core-values-section {
-                    padding: 6rem 2rem;
-                    background-color: var(--color-background);
-                    max-width: 1200px;
-                    margin: 0 auto;
-                }
-
-                .values-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                    gap: 2.5rem;
-                    justify-content: center;
-                    align-items: stretch;
-                }
-
-                .value-card {
-                    background-color: white;
-                    border-radius: 12px;
-                    padding: 2.5rem;
-                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    text-align: center;
-                    cursor: pointer;
-                }
-
-                .value-icon {
-                    margin-bottom: 1rem;
-                    line-height: 1;
-                    color: var(--color-accent);
-                }
-
-                .value-icon :global(svg) {
-                    font-size: 3.5rem;
-                }
-
-                .value-card h3 {
-                    font-size: 1.4rem;
-                    font-weight: 600;
-                    margin-bottom: 0.5rem;
-                    color: var(--color-text-primary);
-                }
-
-                .value-phrase {
-                    font-size: 1.1rem;
-                    font-style: italic;
-                    margin-bottom: 1rem;
-                    color: var(--color-accent);
-                }
-
-                .value-description {
-                    font-size: 0.95rem;
-                    line-height: 1.5;
-                    color: rgba(62, 63, 64, 0.7);
-                }
 
                 /* Responsive Adjustments */
                 @media (max-width: 1024px) {
@@ -499,41 +537,26 @@ export default function AboutPage() {
                     .section-title {
                         font-size: 2.4rem;
                     }
-                    .story-content {
-                        flex-direction: column;
-                        gap: 2rem;
+                    .our-journey-section, .business-statements-section {
+                        padding: 6rem 2rem; /* Keep consistent padding */
                     }
-                    .story-text {
-                        font-size: 1.1rem;
+                    /* Journey Card specific responsive styles */
+                    .journey-spark-content-wrapper {
+                        flex-direction: column; /* Stack columns on smaller screens */
+                        align-items: center;
                     }
-                    .story-image {
-                        flex: 1;
-                        max-width: 500px;
-                        margin-left: auto;
-                        margin-right: auto;
+                    .journey-spark-image-column {
+                        flex: none;
+                        width: 100%;
+                        max-width: 350px; /* Adjust max-width for stacked image */
                     }
-                    .statement-card, .value-card {
-                        padding: 2rem;
+                    .journey-spark-text-column {
+                        flex: none;
+                        width: 100%;
                     }
-                    .statement-icon, .value-icon {
-                        font-size: 3rem;
-                        width: 70px;
-                        height: 70px;
-                    }
-                    .statement-icon :global(svg), .value-icon :global(svg) {
-                        font-size: 2.2rem;
-                    }
-                    .statement-card h3 {
-                        font-size: 1.4rem;
-                    }
-                    .statement-card p {
-                        font-size: 1rem;
-                    }
-                    .value-card h3 {
-                        font-size: 1.25rem;
-                    }
-                    .value-phrase, .value-description {
-                        font-size: 0.9rem;
+                    .journey-milestone-detailed-description-container .founder-image-figure {
+                        max-width: 350px;
+                        margin: 0 auto 1.5rem auto; /* Adjust margin for stacked layout */
                     }
                 }
 
@@ -548,22 +571,20 @@ export default function AboutPage() {
                     .about-hero-subtitle {
                         font-size: 1.2rem;
                     }
-                    .brand-story-section, .business-statements-section, .core-values-section {
+                    .our-journey-section, .business-statements-section {
                         padding: 4rem 1.5rem;
                     }
                     .section-title {
                         font-size: 2rem;
                         margin-bottom: 3rem;
                     }
-                    .story-text {
-                        font-size: 1rem;
+                    /* Journey Card specific responsive styles */
+                    .journey-spark-content-wrapper {
+                        gap: 1rem; /* Smaller gap when stacked */
                     }
-                    .statements-grid, .values-grid {
-                        grid-template-columns: 1fr;
-                        gap: 1.5rem;
-                    }
-                    .statement-card, .value-card {
-                        padding: 1.8rem;
+                    .journey-milestone-detailed-description-container .founder-image-figure {
+                        max-width: 300px;
+                        margin: 0 auto 1rem auto;
                     }
                 }
 
@@ -578,33 +599,17 @@ export default function AboutPage() {
                     .about-hero-subtitle {
                         font-size: 1rem;
                     }
-                    .brand-story-section, .business-statements-section, .core-values-section {
+                    .our-journey-section, .business-statements-section {
                         padding: 3rem 1rem;
                     }
                     .section-title {
                         font-size: 1.8rem;
                         margin-bottom: 2.5rem;
                     }
-                    .statement-icon, .value-icon {
-                        font-size: 2.8rem;
-                        width: 60px;
-                        height: 60px;
-                        margin-bottom: 1rem;
-                    }
-                    .statement-icon :global(svg), .value-icon :global(svg) {
-                        font-size: 2rem;
-                    }
-                    .statement-card h3 {
-                        font-size: 1.25rem;
-                    }
-                    .statement-card p {
-                        font-size: 0.95rem;
-                    }
-                    .value-card h3 {
-                        font-size: 1.1rem;
-                    }
-                    .value-phrase, .value-description {
-                        font-size: 0.85rem;
+                    /* Journey Card specific responsive styles */
+                    .journey-milestone-detailed-description-container .founder-image-figure {
+                        max-width: 250px;
+                        margin: 0 auto 0.8rem auto;
                     }
                 }
             `}</style>

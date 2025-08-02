@@ -15,6 +15,7 @@
   --color-secondary-accent: #ccb699;
 }
 
+
 html, body {
   padding: 0;
   margin: 0;
@@ -794,203 +795,785 @@ body {
 
 
 
-/* --- Why Choose Us Section Global Styles --- */
+
+/* --- Global Utility & Base Styles --- */
+/* These styles are common across multiple sections and elements */
+
+/* Common styles for expanded modal cards when active */
+.card-modal-active {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 90vw;
+    max-width: 700px;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 3rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--color-accent);
+    cursor: default;
+    z-index: 10002;
+    background-color: white;
+}
+
+/* Common styles for inactive (blurred) cards */
+.card-inactive-blurred {
+    filter: blur(5px) brightness(0.7);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Base styles common to most cards' appearance and behavior */
+.base-card-appearance {
+    background-color: white;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    will-change: transform, box-shadow, filter, opacity;
+    pointer-events: auto;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+/* Base styles for circular icons (used in Journey and Business Statements sections) */
+.base-circular-icon {
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(145, 108, 60, 0.1);
+    border-radius: 50%;
+}
+.base-circular-icon svg {
+    color: var(--color-accent);
+}
+
+/* Base styles for card titles (h3 elements) */
+.base-card-title {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+}
+
+/* Base styles for short description text color */
+.base-short-description-text {
+    color: rgba(62, 63, 64, 0.7);
+}
+
+/* Base styles for paragraphs within detailed descriptions */
+.base-detailed-description-text p {
+    line-height: 1.6;
+    color: var(--color-text-primary);
+}
+
+---
+
+
+/* --- About page --- */
+
+
+/* --- Our Journey Section Styles --- */
+.our-journey-section {
+    padding: 6rem 2rem;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.journey-milestones-grid-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+.journey-milestones-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.journey-milestone-card {
+    /* Apply base card appearance */
+    background-color: white;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    will-change: transform, box-shadow, filter, opacity;
+    pointer-events: auto;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+    /* Specific styles for journey cards */
+    padding: 1.2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    min-height: 250px;
+    flex: 0 0 calc(25% - 1.125rem);
+    max-width: 220px;
+    min-width: 180px;
+}
+
+.journey-milestone-card.active {
+    /* Apply common active modal styles */
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 90vw;
+    max-width: 700px;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 3rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--color-accent);
+    cursor: default;
+    z-index: 10002;
+    background-color: white;
+}
+
+.journey-milestone-card.inactive-blurred {
+    /* Apply common inactive blurred styles */
+    filter: blur(5px) brightness(0.7);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.journey-milestone-icon {
+    /* Apply base circular icon styles */
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(145, 108, 60, 0.1);
+    border-radius: 50%;
+    /* Specific sizes for journey icons */
+    font-size: 3rem;
+    width: 60px;
+    height: 60px;
+}
+
+.journey-milestone-icon svg {
+    /* Apply base circular icon svg styles */
+    color: var(--color-accent);
+    /* Specific size */
+    font-size: 2rem;
+}
+
+.journey-milestone-card h3 {
+    /* Apply base title styles */
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+    /* Specific styles */
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+}
+
+.journey-milestone-short-description {
+    /* Apply base short description color */
+    color: rgba(62, 63, 64, 0.7);
+    /* Specific styles */
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.journey-milestone-detailed-description-container {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+}
+
+.journey-milestone-detailed-description-container p {
+    /* Apply base detailed description text styles */
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    /* Specific size */
+    font-size: 1rem;
+}
+
+/* Styles for the specific two-column layout within the expanded "Spark" card */
+.journey-spark-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(62, 63, 64, 0.2);
+    margin-top: 1.5rem;
+}
+
+.journey-spark-image-column {
+    flex: 0 0 30%;
+    max-width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.journey-spark-text-column {
+    flex: 1;
+}
+
+/* Founder image styles within the expanded card */
+.journey-milestone-detailed-description-container .founder-image-figure {
+    margin: 0;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding-bottom: 0.5rem;
+    background-color: white;
+}
+
+.journey-milestone-detailed-description-container .founder-image {
+    border-radius: 12px 12px 0 0;
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.journey-milestone-detailed-description-container .founder-caption {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-top: 1rem;
+    text-align: center;
+    padding: 0 1rem 1rem;
+    width: 100%;
+}
+
+/* --- Responsive Adjustments for Journey Section --- */
+@media (max-width: 1024px) {
+    .journey-milestones-grid {
+        gap: 1rem;
+    }
+    .journey-milestone-card {
+        flex: 0 0 calc(25% - 0.75rem);
+        min-width: 160px;
+        max-width: 200px;
+        padding: 1rem;
+        min-height: 220px;
+    }
+    .journey-milestone-icon {
+        font-size: 2.5rem;
+        width: 50px;
+        height: 50px;
+    }
+    .journey-milestone-icon svg {
+        font-size: 1.8rem;
+    }
+    .journey-milestone-card h3 {
+        font-size: 1.1rem;
+    }
+    .journey-milestone-short-description, .journey-milestone-detailed-description-container p {
+        font-size: 0.85rem;
+    }
+    .journey-spark-content-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    .journey-spark-image-column {
+        flex: none;
+        width: 100%;
+        max-width: 350px;
+    }
+    .journey-spark-text-column {
+        flex: none;
+        width: 100%;
+    }
+    .journey-milestone-detailed-description-container .founder-image-figure {
+        max-width: 350px;
+        margin: 0 auto 1rem auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .journey-milestones-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .journey-milestone-card {
+        flex: none;
+        width: auto;
+        min-width: auto;
+        max-width: auto;
+        padding: 1.8rem;
+        min-height: auto;
+    }
+    .journey-milestone-icon {
+        font-size: 3rem;
+        width: 60px;
+        height: 60px;
+    }
+    .journey-milestone-icon svg {
+        font-size: 2rem;
+    }
+    .journey-milestone-card h3 {
+        font-size: 1.2rem;
+    }
+    .journey-milestone-short-description, .journey-milestone-detailed-description-container p {
+        font-size: 0.95rem;
+    }
+    .journey-spark-content-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    .journey-spark-image-column {
+        flex: none;
+        width: 100%;
+        max-width: 300px;
+    }
+    .journey-spark-text-column {
+        flex: none;
+        width: 100%;
+    }
+    .journey-milestone-detailed-description-container .founder-image-figure {
+        max-width: 300px;
+        margin: 0 auto 1rem auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .journey-milestone-icon {
+        font-size: 2.8rem;
+        width: 55px;
+        height: 55px;
+    }
+    .journey-milestone-icon svg {
+        font-size: 1.8rem;
+    }
+    .journey-milestone-card h3 {
+        font-size: 1.1rem;
+    }
+    .journey-milestone-short-description, .journey-milestone-detailed-description-container p {
+        font-size: 0.9rem;
+    }
+    .journey-milestone-detailed-description-container .founder-image-figure {
+        max-width: 250px;
+        margin: 0 auto 0.8rem auto;
+    }
+}
+
+---
+
+/* --- Business Statements Section Styles --- */
+.business-statements-section {
+    padding: 6rem 2rem;
+    background-color: var(--color-light-text);
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.statements-grid-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+.statements-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.statement-card {
+    /* Apply base card appearance */
+    background-color: white;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    will-change: transform, box-shadow, filter, opacity;
+    pointer-events: auto;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+    /* Specific styles for statement cards */
+    padding: 1.2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    min-height: 250px;
+    flex: 0 0 calc(20% - 1.2rem);
+    max-width: 200px;
+    min-width: 160px;
+}
+
+.statement-card.active {
+    /* Apply common active modal styles */
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 90vw;
+    max-width: 700px;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 3rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--color-accent);
+    cursor: default;
+    z-index: 10002;
+    background-color: white;
+}
+
+.statement-card.inactive-blurred {
+    /* Apply common inactive blurred styles */
+    filter: blur(5px) brightness(0.7);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.statement-icon {
+    /* Apply base circular icon styles */
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(145, 108, 60, 0.1);
+    border-radius: 50%;
+    /* Specific sizes for statement icons */
+    font-size: 3rem;
+    width: 60px;
+    height: 60px;
+}
+
+.statement-icon svg {
+    /* Apply base circular icon svg styles */
+    color: var(--color-accent);
+    /* Specific size */
+    font-size: 2rem;
+}
+
+.statement-card h3 {
+    /* Apply base title styles */
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+    /* Specific styles */
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+}
+
+.statement-short-description {
+    /* Apply base short description color */
+    color: rgba(62, 63, 64, 0.7);
+    /* Specific styles */
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.statement-detailed-description-container {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+}
+
+.statement-detailed-description-container p {
+    /* Apply base detailed description text styles */
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    /* Specific size */
+    font-size: 1rem;
+}
+
+/* --- Responsive Adjustments for Business Statements Section --- */
+@media (max-width: 1024px) {
+    .statements-grid {
+        gap: 1rem;
+    }
+    .statement-card {
+        flex: 0 0 calc(20% - 0.8rem);
+        min-width: 140px;
+        max-width: 180px;
+        padding: 1rem;
+        min-height: 220px;
+    }
+    .statement-icon {
+        font-size: 2.5rem;
+        width: 50px;
+        height: 50px;
+    }
+    .statement-icon svg {
+        font-size: 1.8rem;
+    }
+    .statement-card h3 {
+        font-size: 1.1rem;
+    }
+    .statement-short-description, .statement-detailed-description-container p {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .statements-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .statement-card {
+        flex: none;
+        width: auto;
+        min-width: auto;
+        max-width: auto;
+        padding: 1.8rem;
+        min-height: auto;
+    }
+    .statement-icon {
+        font-size: 3rem;
+        width: 60px;
+        height: 60px;
+    }
+    .statement-icon svg {
+        font-size: 2rem;
+    }
+    .statement-card h3 {
+        font-size: 1.2rem;
+    }
+    .statement-short-description, .statement-detailed-description-container p {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .statement-icon {
+        font-size: 2.8rem;
+        width: 55px;
+        height: 55px;
+    }
+    .statement-icon svg {
+        font-size: 1.8rem;
+    }
+    .statement-card h3 {
+        font-size: 1.1rem;
+    }
+    .statement-short-description, .statement-detailed-description-container p {
+        font-size: 0.9rem;
+    }
+}
+
+---
+
+/* --- Why Choose Us (Value) Section Styles --- */
 .why-choose-us-section {
-  padding: 6rem 2rem;
-  background-color: var(--color-background);
-  color: var(--color-text-primary);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+    padding: 6rem 2rem;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .why-choose-us-section .section-content {
-  max-width: 1100px;
-  margin: 0 auto;
-  z-index: 2; /* Ensure content is above background elements */
-  position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    z-index: 2;
+    position: relative;
 }
 
 .why-choose-us-section .section-headline {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 3rem;
-  line-height: 1.2;
-  color: var(--color-text-primary);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    line-height: 1.2;
+    color: var(--color-text-primary);
 }
 
-/* Wrapper for the grid to apply blur/dim effect */
 .value-tiles-grid-wrapper {
-  position: relative; /* Needed for z-index context */
-  z-index: 1; /* Ensure it's below the backdrop and active card */
+    position: relative;
+    z-index: 1;
 }
 
 .value-tiles-grid {
-  display: flex; /* CHANGE: Use Flexbox for wrapping and centering */
-  flex-wrap: wrap; /* Allow items to wrap to the next line */
-  justify-content: center; /* Center items horizontally (especially the last row) */
-  gap: 1.5rem; /* Consistent gap between items */
-  margin-bottom: 4rem;
-  /* Removed grid-specific properties */
-  /* grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
 }
 
 .value-tile {
-  background-color: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  will-change: transform, box-shadow, filter, opacity;
-  min-height: 280px; /* Keep a consistent height for alignment */
-  pointer-events: auto;
-  transition: filter 0.3s ease, opacity 0.3s ease;
-
-  /* NEW: Flexbox sizing for 4 items per row */
-  flex: 0 0 calc(25% - 1.125rem); /* 25% width minus 3/4 of the gap (1.5rem * 3 / 4) to account for gaps */
-  max-width: 250px; /* Optional: prevent cards from becoming too wide on very large screens */
-  min-width: 180px; /* Ensure cards don't shrink too much */
+    /* Apply base card appearance */
+    background-color: white;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    will-change: transform, box-shadow, filter, opacity;
+    pointer-events: auto;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+    /* Specific styles for value tiles */
+    padding: 1.5rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    min-height: 280px;
+    flex: 0 0 calc(25% - 1.125rem);
+    max-width: 250px;
+    min-width: 180px;
 }
 
-/* Styles for the expanded card - similar to problem-card.active */
 .value-tile.active {
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  width: 90vw;
-  max-width: 700px;
-  height: auto;
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 3rem;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-  border: 2px solid var(--color-accent);
-  cursor: default;
-  z-index: 10002;
-  background-color: white;
+    /* Apply common active modal styles */
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 90vw;
+    max-width: 700px;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 3rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--color-accent);
+    cursor: default;
+    z-index: 10002;
+    background-color: white;
 }
 
-/* Styles for inactive (blurred) cards */
 .value-tile.inactive-blurred {
+    /* Apply common inactive blurred styles */
     filter: blur(5px) brightness(0.7);
     opacity: 0.7;
     pointer-events: none;
 }
 
 .value-icon {
-  margin-bottom: 1rem;
-  line-height: 1;
-  color: var(--color-accent);
+    /* Specific styles for value icons (differ from circular icons) */
+    margin-bottom: 1rem;
+    line-height: 1;
+    color: var(--color-accent);
 }
 
 .value-icon svg {
-  font-size: 3.5rem;
+    font-size: 3.5rem;
 }
 
 .value-tile h3 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--color-text-primary);
+    /* Apply base title styles */
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+    /* Specific styles */
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
 }
 
 .value-short-description {
-  font-size: 1.1rem;
-  font-style: italic;
-  margin-bottom: 1rem;
-  color: var(--color-accent);
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+    color: var(--color-accent);
 }
 
 .value-detailed-description-container {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--color-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-text-primary);
 }
 
 .value-detailed-description-container p {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--color-text-primary);
+    /* Apply base detailed description text styles */
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    /* Specific size */
+    font-size: 1rem;
 }
 
 .why-choose-us-section .impact-statement {
-  font-size: 1.2rem;
-  line-height: 1.7;
-  max-width: 800px;
-  margin: 0 auto 4rem auto;
-  color: var(--color-text-primary);
+    font-size: 1.2rem;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 0 auto 4rem auto;
+    color: var(--color-text-primary);
 }
 
 .why-choose-us-background-elements {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
 
-/* Responsive Adjustments */
+/* --- Responsive Adjustments for Why Choose Us (Value) Section --- */
 @media (max-width: 1024px) {
-  .why-choose-us-section .section-headline {
-    font-size: 2.2rem;
-  }
-  .value-tiles-grid {
-    gap: 1rem; /* Smaller gap for tablets */
-  }
-  .value-tile {
-    flex: 0 0 calc(25% - 0.75rem); /* Adjust flex-basis for 4 items with smaller gap */
-    min-width: 160px;
-    max-width: 220px;
-    padding: 1.2rem;
-    min-height: 250px;
-  }
-  .value-icon svg {
-    font-size: 3rem;
-  }
-  .value-tile h3 {
-    font-size: 1.2rem;
-  }
-  .value-short-description, .value-detailed-description-container p {
-    font-size: 0.9rem;
-  }
+    .why-choose-us-section .section-headline {
+        font-size: 2.2rem;
+    }
+    .value-tiles-grid {
+        gap: 1rem;
+    }
+    .value-tile {
+        flex: 0 0 calc(25% - 0.75rem);
+        min-width: 160px;
+        max-width: 220px;
+        padding: 1.2rem;
+        min-height: 250px;
+    }
+    .value-icon svg {
+        font-size: 3rem;
+    }
+    .value-tile h3 {
+        font-size: 1.2rem;
+    }
+    .value-short-description, .value-detailed-description-container p {
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 768px) {
-  .why-choose-us-section .section-headline {
-    font-size: 2rem;
-  }
-  .value-tiles-grid {
-    display: grid; /* CHANGE: Revert to Grid for mobile stacking */
-    grid-template-columns: 1fr; /* Stack cards on mobile */
-    gap: 1.5rem; /* Standard mobile gap */
-  }
-  .value-tile {
-    flex: none; /* Remove flex properties when stacked */
-    width: auto; /* Remove fixed width */
-    min-width: auto;
-    max-width: auto;
-    padding: 1.8rem; /* Standard mobile padding */
-    min-height: auto; /* Remove fixed height when stacked */
-  }
-  .value-icon svg {
-    font-size: 3rem;
-  }
-  .why-choose-us-section .impact-statement {
-    font-size: 1rem;
-  }
+    .why-choose-us-section .section-headline {
+        font-size: 2rem;
+    }
+    .value-tiles-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .value-tile {
+        flex: none;
+        width: auto;
+        min-width: auto;
+        max-width: auto;
+        padding: 1.8rem;
+        min-height: auto;
+    }
+    .value-icon svg {
+        font-size: 3rem;
+    }
+    .why-choose-us-section .impact-statement {
+        font-size: 1rem;
+    }
 }
 
 @media (max-width: 480px) {
-  .why-choose-us-section .section-headline {
-    font-size: 1.8rem;
-  }
+    .why-choose-us-section .section-headline {
+        font-size: 1.8rem;
+    }
 }
-/* --- End Why Choose Us Section Global Styles --- */
+

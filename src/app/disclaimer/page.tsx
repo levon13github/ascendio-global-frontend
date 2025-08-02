@@ -38,7 +38,7 @@ export default function DisclaimerPage() {
           </p>
         </section>
       </main>
-      <Footer />
+
       <style jsx>{`
         .legal-page-container {
           padding: 8rem 2rem 4rem; /* Adjusted padding to account for fixed header */
